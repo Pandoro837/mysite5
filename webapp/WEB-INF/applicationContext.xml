@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+						http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+						http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.1.xsd
+						http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
+						http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
+						http://www.springframework.org/schema/task
+						http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+	<context:annotation-config />
+
+	<context:component-scan base-package="com.javaex">		<!--com.javaex 패키지 밑에 있는 -->		<!-- stereotype. - 이하의 어노테이션을 인식 -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />	<!-- @Repository -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />	<!-- @Service -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />	<!-- @Component Dao 관련 어노테이션 -->
+	</context:component-scan>
+
+	<!--oracle datasource -->
+	<bean id="oracleDatasource" class="oracle.jdbc.pool.OracleDataSource" destroy-method="close">
+		<property name="URL" value="jdbc:oracle:thin:@localhost:1521:xe" />			<!-- url입력, Dao의 url -->
+		<property name="user" value="webdb" />						<!-- user(id) Dao의 dbId -->
+		<property name="password" value="webdb" />					<!-- password Dao의 dbPw -->
+		<property name="connectionCachingEnabled" value="true" />
+		<qualifier value="main-db" />
+	</bean>
+	
+	<!--MyBatisSqlSessionFactoryBean설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="oracleDatasource" />	 
+	<!-- ref="oracleDatasource" 오라클 데이터 소스를 참조 -->
+		<property name="configLocation" value="classpath:mybatis/configuration.xml" />			<!-- classpath:mybatis/configuration.xml 파일 필요 -->
+	</bean>
+	
+	<!--MyBatisSqlSessionTemplate설정 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg index ="0" ref="sqlSessionFactory" />						<!-- ref="sqlSessionFactory" 오라클 데이터 소스를 참조 -->
+	</bean>
+	
+
+</beans>
