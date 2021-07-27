@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	
+	<resultMap type="UserVo" id="resultMapUserVo">
+		<result column="no" property="no"/>
+		<result column="name" property="name"/>
+		<result column="id" property="id"/>
+		<result column="password" property="password"/>
+	</resultMap>
+	
+	<!-- authUser에 담길 정보 -->
+	<select id="selectUser" parameterType="UserVo" resultMap="resultMapUserVo">
+		<![CDATA[
+			SELECT
+				no,
+				name
+			FROM
+				users
+			WHERE id = #{id}
+			  AND password = #{password}
+		]]>
+	</select>
+	
+	<!-- userModify에 담길 정보 -->
+	<select id="selectUserModify" parameterType="int" resultMap="resultMapUserVo">
+		<![CDATA[
+			SELECT
+				name,
+				id,
+				password,
+				gender
+			FROM
+				users
+			WHERE no = #{no}
+		]]>
+	</select>
+	
+</mapper>
