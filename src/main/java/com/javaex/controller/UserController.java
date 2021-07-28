@@ -59,6 +59,28 @@ public class UserController {
 		return "redirect:/main";
 	}
 	
+	//회원가입 화면
+	@RequestMapping(value="/joinForm", method = {RequestMethod.GET, RequestMethod.POST})
+	public String joinForm() {
+		
+		System.out.println(line+"joinForm"+line);
+		
+		return "/user/joinForm";
+	}
+	
+	//회원가입
+	@RequestMapping(value="/join", method = {RequestMethod.GET, RequestMethod.POST})
+	public String join(@ModelAttribute UserVo userJoin) {
+		
+		System.out.println(line+"join"+line);
+		
+		System.out.println(userJoin.toString());
+		
+		userService.join(userJoin);
+		
+		return "/user/joinOk";
+	}
+	
 	//회원 정보 수정
 	@RequestMapping(value="/modifyForm", method = {RequestMethod.GET, RequestMethod.POST})
 	public String modifyForm(HttpSession session, Model model) {
@@ -72,5 +94,20 @@ public class UserController {
 		return "/user/modifyForm";
 	}
 	
+	//정보 수정
+	@RequestMapping(value="/modify", method = {RequestMethod.GET, RequestMethod.POST})
+	public String modify(HttpSession session ,@ModelAttribute UserVo userModify) {
+		
+		int no = ((UserVo)session.getAttribute("authUser")).getNo();
+
+		userModify.setNo(no); 
+		
+		userService.modify(userModify);
+		
+		((UserVo)session.getAttribute("authUser")).setName(userModify.getName());
+		
+		return "redirect:/main";
+		
+	}
 	
 }

@@ -36,4 +36,28 @@
 		]]>
 	</select>
 	
+	<!-- update -->
+	<update id="updateUser" parameterType="UserVo">
+		<![CDATA[
+			UPDATE users SET
+			name = #{name},
+			password = #{password},
+			gender = #{gender}
+			WHERE no = #{no}
+		]]>
+	</update>
+	
+	<insert id="insertUser" parameterType="UserVo">
+		<![CDATA[
+			INSERT INTO users
+			VALUES(
+				 seq_user_no.NEXTVAL
+				,#{id}
+				,#{password}
+				,#{name}
+				,#{gender}
+			)
+		]]>
+	</insert>
+	
 </mapper>

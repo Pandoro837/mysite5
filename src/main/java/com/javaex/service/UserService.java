@@ -26,4 +26,18 @@ public class UserService {
 		
 	}
 	
+	//정보 수정
+	public void modify(UserVo userModify) {
+		
+		userDao.update(userModify);
+		
+	}
+	
+	//회원 가입
+	public void join(UserVo userJoin) {
+		
+		userDao.insert(userJoin);
+		
+	}
+	
 }

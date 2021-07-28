@@ -48,7 +48,7 @@
 
 				<div id="user">
 					<div id="modifyForm">
-						<form action="/modify" method="get">
+						<form action="${pageContext.request.contextPath }/user/modify" method="get">
 
 							<!-- 아이디 -->
 							<div class="form-group">
