@@ -10,6 +10,7 @@
 		<result column="content" property="content"/>
 		<result column="user_no" property="userNo"/>
 		<result column="name" property="name"/>
+		<result column="rownum" property="rownum"/>
 	</resultMap>
 
 	<update id="updateHit" parameterType="int">
@@ -38,5 +39,67 @@
 			  AND board.no = #{boardNo} 
 		]]>
 	</select>
+	
+	<select id="selectListBoard" parameterType="String" resultMap="resultMapBoardVo">
+		<![CDATA[
+			SELECT
+				*
+			FROM
+				(SELECT
+	    			rownum
+	    			,bo.*
+				 FROM
+				    (SELECT
+				         board.no
+				        ,title
+	     			    ,hit
+				        ,TO_CHAR(reg_date,'yy/mm/dd hh:mi:ss') reg_date
+				        ,name
+				        ,user_no
+				     FROM
+				        board,
+				        users
+				     WHERE board.user_no = users.no
+				     ORDER BY reg_date ASC) bo
+				 ORDER BY rownum DESC)
+		]]>
+		<if test="value != null || value != ''">
+		<![CDATA[
+			WHERE name like '%' || #{searchWord} || '%'
+			   OR title like '%' || #{searchWord} || '%'
+		]]>
+		</if>
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			DELETE board
+			WHERE no = #{no}
+		]]>
+	</delete>
+	
+	<insert id="insert" parameterType="BoardVo">
+		<![CDATA[
+			INSERT INTO board
+			VALUES(
+			     SEQ_NO.NEXTVAL
+			    ,#{title}
+			    ,#{content}
+			    ,0
+			    ,sysdate
+			    ,#{userNo}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateModify" parameterType="BoardVo">
+		<![CDATA[
+			UPDATE board 
+			SET
+				 title = #{title}
+				,content = #{content}
+			WHERE no = #{boardNo}
+		]]>
+	</update>
 
 </mapper>

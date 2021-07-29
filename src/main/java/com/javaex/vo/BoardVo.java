@@ -9,6 +9,7 @@ public class BoardVo {
 	private String regDate;
 	private int userNo;
 	private String name;
+	private int rownum;
 
 	public BoardVo() {
 		super();
@@ -70,10 +71,18 @@ public class BoardVo {
 		this.name = name;
 	}
 
+	public int getRownum() {
+		return rownum;
+	}
+
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
+
 	@Override
 	public String toString() {
 		return "BoardVo [boardNo=" + boardNo + ", title=" + title + ", hit=" + hit + ", content=" + content
-				+ ", regDate=" + regDate + ", userNo=" + userNo + ", name=" + name + "]";
+				+ ", regDate=" + regDate + ", userNo=" + userNo + ", name=" + name + ", rownum=" + rownum + "]";
 	}
 	
 }

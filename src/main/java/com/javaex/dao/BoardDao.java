@@ -1,5 +1,7 @@
 package com.javaex.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,4 +30,22 @@ public class BoardDao {
 		return boardRead;
 	}
 	
+	public List<BoardVo> selectList(String searchWord) {
+		
+		List<BoardVo> boardList = sqlSession.selectList("board.selectListBoard", searchWord);
+		
+		return boardList;
+	}
+	
+	public void delete(int no) {
+		sqlSession.delete("board.delete", no);
+	}
+	
+	public void insert(BoardVo boardWrite) {
+		sqlSession.insert("board.insert", boardWrite);
+	}
+	
+	public void updateBoard(BoardVo boardModified) {
+		sqlSession.update("board.updateModify", boardModified);
+	}
 }
