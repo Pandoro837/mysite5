@@ -22,7 +22,7 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
-	
+	 
 	@RequestMapping(value="/read", method = {RequestMethod.GET, RequestMethod.POST})
 	public String read(Model model, @RequestParam("no") int no) {
 		
