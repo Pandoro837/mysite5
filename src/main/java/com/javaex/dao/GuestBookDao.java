@@ -26,8 +26,17 @@ public class GuestBookDao {
 		sqlSession.insert("guestbook.insertGuestBook", guestBookAdd);
 	}
 	
-	public void delete(Map<String, Object> deleteMap) {
-		sqlSession.delete("guestbook.delete",deleteMap);
+	//ajax용 insert
+	public int ajaxInsert(GuestBookVo guestBookAdd) {
+		return sqlSession.insert("guestbook.ajaxInsert", guestBookAdd);
+	}
+	
+	public GuestBookVo selectOne(int no) {
+		return sqlSession.selectOne("guestbook.selectOne", no);
+	}
+	
+	public int delete(Map<String, Object> deleteMap) {
+		return sqlSession.delete("guestbook.delete",deleteMap);
 	}
 	
 }
