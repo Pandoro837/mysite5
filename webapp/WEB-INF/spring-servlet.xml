@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns="http://www.springframework.org/schema/beans"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
 	http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
@@ -14,15 +11,14 @@
 	<!--annotation 설정을하겠다. -->
 	<context:annotation-config />
 
-	<!-- com.javaex.controller패키지 밑에 있는 클래스중에 @Controller를 달고있는 클래스의 객체를 생성하겠다. 
-		(new 하겠다) -->
-	<context:component-scan
-		base-package="com.javaex.controller" />
-		
+	<!-- com.javaex.controller패키지 밑에 있는 클래스중에 @Controller를 달고있는 클래스의 객체를 생성하겠다. (new 하겠다) -->
+	<context:component-scan base-package="com.javaex.controller" />
+	<context:component-scan base-package="com.javaex.api.controller" />
+
 	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
 	<mvc:default-servlet-handler />
 	<mvc:annotation-driven />
-	
+
 	<!--기본뷰리졸버 -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
@@ -30,5 +26,23 @@
 		<property name="suffix" value=".jsp" />		<!-- forward시 뒤에 붙을 문자열 -->
 		<property name="order" value="1" />
 	</bean>
-	
+
+	<!-- jackson을 통해 json으로 변환 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+
+				<property name="supportedMediaTypes">
+
+					<list>
+
+						<value>application/json; charset=UTF-8</value>
+
+					</list>
+				</property>
+
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
 </beans>
