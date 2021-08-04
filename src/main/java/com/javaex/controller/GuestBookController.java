@@ -58,4 +58,11 @@ public class GuestBookController {
 		
 		return "redirect:/guestbook/addList";
 	}
+	
+	//방명록 ajax 방식
+	@RequestMapping(value = "/ajaxMain", method = {RequestMethod.GET, RequestMethod.POST})
+	public String ajaxMain() {
+		return "/guestbook/ajaxAddList";
+	}
+
 }
