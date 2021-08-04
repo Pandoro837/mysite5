@@ -19,7 +19,7 @@
 			    ,TO_CHAR(reg_date, 'yyyy-mm-dd hh24:mi:ss') reg_date
 			FROM
 			    guestbook
-			ORDER BY reg_date ASC
+			ORDER BY no DESC
 		]]>
 	</select>
 	
@@ -35,6 +35,41 @@
 			)
 		]]>
 	</insert>
+	
+	<!-- 방명록 글 저장 + 키 값을 Vo에 넣는다 -->
+	<insert id="ajaxInsert" parameterType="GuestBookVo">
+		<!-- insert문 실행 전에, seq_no.NEXTVA 값을 가져다 GuestBookVo에 넣는다 -->
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			<![CDATA[
+				SELECT seq_no.NEXTVAL FROM dual
+			]]>
+		</selectKey>
+		<![CDATA[
+			INSERT INTO guestbook 
+			VALUES(
+				 #{no}
+				,#{name}
+				,#{password}
+				,#{content}
+				,SYSDATE
+			)
+		]]>
+	</insert>
+	
+	<!-- 방명록을 하나 가져오기 -->
+	<select id="selectOne" parameterType="int" resultMap="resultMapGuestBook">
+		<![CDATA[
+			SELECT
+			     no
+			    ,name
+			    ,pw
+			    ,content
+			    ,TO_CHAR(reg_date, 'yyyy-mm-dd hh24:mi:ss') reg_date
+			FROM
+			    guestbook
+			WHERE no = #{no}
+		]]>
+	</select>
 	
 	<delete id="delete" parameterType="map">
 		<![CDATA[
