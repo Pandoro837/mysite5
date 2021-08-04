@@ -23,7 +23,20 @@ public class GuestBookService {
 		guestBookDao.insert(guestBookAdd);
 	}
 	
-	public void delete(Map<String, Object> deleteMap) {
-		guestBookDao.delete(deleteMap);
+	//ajax용 insert
+	public GuestBookVo ajaxAdd(GuestBookVo guestBookAdd) {
+		//저장
+		//저장된 갯수 return + guestBookAdd에 no 추가
+		guestBookDao.ajaxInsert(guestBookAdd);	
+		//no 저장하기
+		int no = guestBookAdd.getNo();
+		
+		//글 가져오기
+		GuestBookVo guestBookReturn = guestBookDao.selectOne(no);
+		return guestBookReturn;
+	}
+	
+	public int delete(Map<String, Object> deleteMap) {
+		return guestBookDao.delete(deleteMap);
 	}
 }
