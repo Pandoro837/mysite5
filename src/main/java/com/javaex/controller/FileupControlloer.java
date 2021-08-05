@@ -19,7 +19,6 @@ public class FileupControlloer {
 	
 	@RequestMapping(value= "/form", method = {RequestMethod.GET, RequestMethod.POST})
 	public String form() {
-		System.out.print("/form");
 		
 		return "/fileup/form";
 	}
