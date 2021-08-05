@@ -5,12 +5,14 @@
 		<typeAlias alias="UserVo" type="com.javaex.vo.UserVo" />
 		<typeAlias alias="BoardVo" type="com.javaex.vo.BoardVo" />
 		<typeAlias alias="GuestBookVo" type="com.javaex.vo.GuestBookVo" />
+		<typeAlias alias="GalleryVo" type="com.javaex.vo.GalleryVo" />
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="mybatis/mappers/user.xml" />
 		<mapper resource="mybatis/mappers/board.xml" />
 		<mapper resource="mybatis/mappers/guestbook.xml" />
+		<mapper resource="mybatis/mappers/gallery.xml" />
 	</mappers>
 
 </configuration>
