@@ -29,5 +29,12 @@
 				<li><a href="">댓글게시판</a></li>
 			</ul>	
 		</c:when>
+		<c:when test="${fn:contains(servletPath, 'fileup') || fn:contains(servletPath, 'gallery') }">
+			<h2>갤러리</h2>
+			<ul>
+				<li><a href="${pageContext.request.contextPath }/fileup/form">첨부파일연습</a></li>
+				<li><a href="${pageContext.request.contextPath }/gallery/list">갤러리</a></li>
+			</ul>
+		</c:when>
 	</c:choose>
 </div>
