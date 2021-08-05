@@ -16,13 +16,28 @@
 	<select id="selectList" resultMap="resulTMapGalleryVo">
 		<![CDATA[
 			SELECT
-    			save_name
+    			 save_name
     			,users.name
+    			,gallery.no
 			FROM
      			gallery
     			,users
 			WHERE gallery.user_no = users.no
 			ORDER BY gallery.no DESC
+		]]>
+	</select>
+	
+	<!-- selectOne -->
+	<select id="selectOne" parameterType="int" resultMap="resulTMapGalleryVo">
+		<![CDATA[
+			SELECT
+    			 save_name
+    			,content
+    			,no
+    			,user_no
+			FROM
+     			gallery
+     		WHERE no = #{galleryNo}
 		]]>
 	</select>
 	
@@ -49,6 +64,14 @@
 			)
 		]]>
 	</insert>
+	
+	<!-- delete -->
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			DELETE FROM gallery
+			WHERE no = #{galleryNo}
+		]]>
+	</delete>
 	
 	
 </mapper>

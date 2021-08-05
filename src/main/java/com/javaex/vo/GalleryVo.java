@@ -22,6 +22,15 @@ public class GalleryVo {
 		this.size = size;
 	}
 	
+	public GalleryVo(int userNo, String filePath, String orgName, String saveName, String content, long size) {
+		super();
+		this.userNo = userNo;
+		this.filePath = filePath;
+		this.orgName = orgName;
+		this.saveName = saveName;
+		this.content = content;
+		this.size = size;
+	}
 	public int getGalleryNo() {
 		return galleryNo;
 	}

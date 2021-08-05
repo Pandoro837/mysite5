@@ -58,20 +58,19 @@
 
 
 						<ul id="viewArea">
-							<c:if test="${!empty galleryList }">
 							<!-- 이미지반복영역 -->
-							<c:forEach items="${galleryList }" var="imgInfo">
-								<li>
-									<div class="view">
-										<img class="imgItem" src="${pageContext.request.contextPath }/upload/${imgInfo.saveName}">
-										<div class="imgWriter">
-											작성자: <strong>${imgInfo.userName }</strong>
+							<c:if test="${!empty galleryList }">
+								<c:forEach items="${galleryList }" var="imgInfo">
+									<li>
+										<div class="view" data-no="${imgInfo.galleryNo }">
+											<img class="imgItem" src="${pageContext.request.contextPath }/upload/${imgInfo.saveName}" >
+											<div class="imgWriter" data-userno="${imgInfo.userNo}" >
+												작성자: <strong>${imgInfo.userName }</strong>
+											</div>
 										</div>
-									</div>
-								</li>
-							</c:forEach>
+									</li>
+								</c:forEach>
 							</c:if>
-
 						</ul>
 					</div>
 					<!-- //list -->
@@ -83,8 +82,7 @@
 			<!-- //content  -->
 		</div>
 		<!-- //container  -->
-
-
+	
 		<!-- 푸터 -->
 		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import>
 		<!-- //푸터 -->
@@ -110,7 +108,7 @@
 					<h4 class="modal-title">이미지등록</h4>
 				</div>
 
-				<form method="post" action="/upload" enctype="">
+				<form method="post" action="${pageContext.request.contextPath }/gallery/upload" enctype="multipart/form-data">
 					<div class="modal-body">
 						<div class="form-group">
 							<label class="form-text">글작성</label> <input id="addModalContent" type="text" name="content" value="">
@@ -156,14 +154,10 @@
 					</div>
 
 				</div>
-				<form method="" action="">
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-danger" id="btnDel">삭제</button>
-					</div>
-
-
-				</form>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-danger" id="btnDel">삭제</button>
+				</div>
 
 			</div>
 			<!-- /.modal-content -->
@@ -172,8 +166,91 @@
 	</div>
 	<!-- /.modal -->
 
+	<!-- 유저 확인용 -->
+	<c:if test="${!empty authUser }">
+		<input class="auth" type="hidden" data-auth="${authUser.no }">
+	</c:if>
 
 </body>
+
+<script type="text/javascript">
+	//업로드 버튼 클릭 시, 모달 팝업
+	$("#btnImgUpload").on("click", function(){
+		console.log("업로드 버튼 클릭");
+		$("#addModal").modal();
+	});
+	
+	//글 보기 모달
+	$(".view").on("click", function(){
+		
+		$.ajax({
+	        url: "${pageContext.request.contextPath }/api/gallery/show",
+	        type: "post",
+	        //contentType: "application/json",
+	        data: { galleryNo : $(this).data("no") },
+	        
+	        //dataType: "json",
+	        success: function(showVo) {
+	            // TODO : 결과로 받은 resultData로 작업 !
+	        	
+	            console.log(showVo.userNo);
+	            console.log($(".auth").data("auth"));
+	            
+				if($(".auth").data("auth") == null || ($(".auth").data("auth") != showVo.userNo)){
+						 
+					console.log("불일치");
+					$("#btnDel").remove();
+			            
+				}
+	            
+	        	if(showVo.content === null){
+	        		showVo.content = "";
+	        	}
+	        
+	        	$("#viewModelImg").attr("src", "${pageContext.request.contextPath}/upload/" + showVo.saveName);
+	        	$("#viewModelContent").text(showVo.content);
+	        	
+	        	$("#viewModal").modal();
+	        	
+	        	//글 삭제 모달
+	        	$("#btnDel").on("click", function(){
+	        		console.log("삭제 버튼 클릭");
+	        		
+	        		$.ajax({
+	        	        url: "${pageContext.request.contextPath }/api/gallery/remove",
+	        	        type: "post",
+	        	        //contentType: "application/json",
+	        	        data: { galleryNo : showVo.galleryNo },
+	        	        
+	        	        //dataType: "json",
+	        	        success: function(result) {
+	        	            // TODO : 결과로 받은 resultData로 작업 !
+	        	            console.log("결과"+result);
+	        	        	if(result === 1){
+	        	        		 $("[data-no = " + showVo.galleryNo + "]").remove();
+	        	        			$("#viewModal").modal("hide");
+	        	        		 
+	        	        	}
+	        	        
+	        	        },
+	        	        error: function(jqXHR, textStatus, errorThrown) {
+	        	            // 에러 로그는 아래처럼 확인해볼 수 있다. 
+	        	            alert("업로드 에러\ncode : " + jqXHR.status + "\nerror message : " + jqXHR.responseText);
+	        	        }
+	        		});
+	        		
+	        	});
+	        	
+	        },
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            // 에러 로그는 아래처럼 확인해볼 수 있다. 
+	            alert("업로드 에러\ncode : " + jqXHR.status + "\nerror message : " + jqXHR.responseText);
+	        }
+		})
+		
+	});
+	
+</script>
 
 </html>
 
