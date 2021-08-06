@@ -64,7 +64,7 @@
 									<li>
 										<div class="view" data-no="${imgInfo.galleryNo }">
 											<img class="imgItem" src="${pageContext.request.contextPath }/upload/${imgInfo.saveName}" >
-											<div class="imgWriter" data-userno="${imgInfo.userNo}" >
+											<div class="imgWriter" >
 												작성자: <strong>${imgInfo.userName }</strong>
 											</div>
 										</div>
@@ -165,12 +165,12 @@
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
-
+<%-- 불필요한 태그를 남기게 된다
 	<!-- 유저 확인용 -->
 	<c:if test="${!empty authUser }">
 		<input class="auth" type="hidden" data-auth="${authUser.no }">
 	</c:if>
-
+ --%>
 </body>
 
 <script type="text/javascript">
@@ -194,18 +194,25 @@
 	            // TODO : 결과로 받은 resultData로 작업 !
 	        	
 	            console.log(showVo.userNo);
-	            console.log($(".auth").data("auth"));
+	           // console.log($(".auth").data("auth"));
 	            
-				if($(".auth").data("auth") == null || ($(".auth").data("auth") != showVo.userNo)){
+	            
+	            //작업의 진행 순서는 JAVA>JSTL>HTML>Javscript
+//				if($(".auth").data("auth") == null || ($(".auth").data("auth") != showVo.userNo)){
+//				if('<c:out value="${sessionScope.authUser.no }" />' == null || ('<c:out value="${sessionScope.authUser.no }" />' != showVo.userNo)){
+				if("${sessionScope.authUser.no }" == null || "${sessionScope.authUser.no }" != showVo.userNo){
 						 
 					console.log("불일치");
-					$("#btnDel").remove();
+					$("#btnDel").hide();
 			            
+				} else {
+					console.log("일치");
+					$("#btnDel").show();
 				}
-	            
-	        	if(showVo.content === null){
-	        		showVo.content = "";
-	        	}
+	            //null 값을 upload의 리콰이어로 해결
+//	        	if(showVo.content === null){
+//	        		showVo.content = "";
+//	        	}
 	        
 	        	$("#viewModelImg").attr("src", "${pageContext.request.contextPath}/upload/" + showVo.saveName);
 	        	$("#viewModelContent").text(showVo.content);

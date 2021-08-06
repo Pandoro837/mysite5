@@ -34,7 +34,7 @@ public class GalleryController {
 	
 	
 	@RequestMapping(value = "/upload", method = {RequestMethod.GET, RequestMethod.POST})
-	public String upload(@RequestParam("file") MultipartFile file, @RequestParam("content") String content, HttpSession session) {
+	public String upload(@RequestParam("file") MultipartFile file, @RequestParam(value = "content", required = false, defaultValue = " ") String content, HttpSession session) {
 		
 		int userNo = ((UserVo)session.getAttribute("authUser")).getNo();
 		
