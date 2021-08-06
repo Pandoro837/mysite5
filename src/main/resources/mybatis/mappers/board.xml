@@ -12,6 +12,62 @@
 		<result column="name" property="name"/>
 		<result column="rownum" property="rownum"/>
 	</resultMap>
+	
+	<!-- 전체 게시글의 수 구하기 -->
+	<select id="selectCnt" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT 
+				COUNT(*)
+			FROM board b, users u
+			        WHERE b.user_no = u.no
+		]]>			 
+			<if test="_parameter != null and _parameter !=''">
+					  AND b.title like '%'|| #{parameter} ||'%'
+			</if>       
+		<![CDATA[
+		]]>
+	</select>
+	
+	<!-- 페이징 연습용 리스트 -->
+	<select id="selectList2" parameterType="map" resultMap="resultMapBoardVo">
+		<![CDATA[
+			SELECT
+			    rt.rn
+			    ,rt.no
+			    ,rt.title
+			    ,rt.hit
+			    ,rt.regdate
+			    ,rt.userno
+			FROM
+			    (SELECT
+			        ROWNUM rn
+			        ,ot.no
+			        ,ot.title
+			        ,ot.hit
+			        ,ot.regdate
+			        ,ot.userno
+			    FROM 
+			        (SELECT 
+			            b.no
+			            ,b.title
+			            ,b.hit
+			            ,b.reg_date regDate
+			            ,b.user_no userNo
+			            ,u.name
+			        FROM board b, users u
+			        WHERE b.user_no = u.no
+		]]>			 
+			<if test="searchWord != null and searchWord !=''">
+					  AND b.title like '%'|| #{searchWord} ||'%'
+			</if>       
+		<![CDATA[	        
+			        ORDER BY b.no DESC) ot) rt
+			WHERE rt.rn BETWEEN #{startNum} 
+			  AND #{endNum}
+		]]>
+	</select>
+
+
 
 	<update id="updateHit" parameterType="int">
 		<![CDATA[
@@ -82,7 +138,7 @@
 		<![CDATA[
 			INSERT INTO board
 			VALUES(
-			     SEQ_NO.NEXTVAL
+			     seq_board_no.NEXTVAL
 			    ,#{title}
 			    ,#{content}
 			    ,0

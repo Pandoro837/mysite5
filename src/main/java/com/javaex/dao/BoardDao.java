@@ -1,6 +1,7 @@
 package com.javaex.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,19 @@ public class BoardDao {
 
 	@Autowired
 	private SqlSession sqlSession;
+	
+	//전체 게시글 갯수 구하기
+	public int selectCnt(String searchWord) {
+		return sqlSession.selectOne("board.selectCnt", searchWord);
+	}
+	
+	//페이징 연습용 리스트
+	public List<BoardVo> selectList2(Map<String, Object> pageMap) {
+		System.out.println(pageMap);
+		return sqlSession.selectList("board.selectList2", pageMap);
+	}
+	
+	
 	
 	//hit 증가
 	public int updateHit(int boardNo) {
@@ -29,7 +43,7 @@ public class BoardDao {
 		
 		return boardRead;
 	}
-	
+
 	public List<BoardVo> selectList(String searchWord) {
 		
 		List<BoardVo> boardList = sqlSession.selectList("board.selectListBoard", searchWord);

@@ -1,6 +1,7 @@
 package com.javaex.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +24,25 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	 
+	
+	//페이징 연습용 리스트
+	@RequestMapping(value="/list2", method = {RequestMethod.GET, RequestMethod.POST})
+	public String list2(Model model, @RequestParam(value = "crtPage", required = false, defaultValue = "1") int crtPage,
+									 @RequestParam(value = "searchWord", required = false, defaultValue = "") String searchWord
+			) {
+		
+		System.out.println("/controller/list2");
+		System.out.println(crtPage);
+		
+		Map<String, Object> listMap = boardService.getList2(crtPage, searchWord);
+		
+		model.addAttribute("listMap", listMap);
+		System.out.println(listMap);
+
+		return "/board/list2";
+	}
+	
+	
 	@RequestMapping(value="/read", method = {RequestMethod.GET, RequestMethod.POST})
 	public String read(Model model, @RequestParam("no") int no) {
 		
@@ -41,6 +61,8 @@ public class BoardController {
 		
 		return "/board/list";
 	}
+	
+	
 	
 	@RequestMapping(value="/delete", method = {RequestMethod.GET, RequestMethod.POST})
 	public String delete(@RequestParam("no") int no) {
