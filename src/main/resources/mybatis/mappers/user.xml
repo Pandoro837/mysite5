@@ -22,6 +22,18 @@
 		]]>
 	</select>
 	
+	<!-- 회원 가입시, 아이디 중복 체크 -->
+	<select id="selectId" parameterType="String" resultMap="resultMapUserVo">
+		<![CDATA[
+			SELECT
+				id
+			FROM
+				users
+			WHERE id = #{id}
+		]]>
+	</select>
+	
+	
 	<!-- userModify에 담길 정보 -->
 	<select id="selectUserModify" parameterType="int" resultMap="resultMapUserVo">
 		<![CDATA[
@@ -47,6 +59,7 @@
 		]]>
 	</update>
 	
+	<!-- 회원가입 -->
 	<insert id="insertUser" parameterType="UserVo">
 		<![CDATA[
 			INSERT INTO users

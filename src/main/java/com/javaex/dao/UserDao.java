@@ -44,5 +44,14 @@ public class UserDao {
 		
 	}
 	
+	//회원 가입 시, 아이디 중복 체크
+	public UserVo selectId(String id) {
+		
+		System.out.println("idCheck - Dao");
+		System.out.println(id);
+		
+		return sqlSession.selectOne("user.selectId", id);
+	}
+	
 	
 }

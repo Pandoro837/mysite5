@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.javaex.service.UserService;
 import com.javaex.vo.UserVo;
@@ -16,8 +19,6 @@ import com.javaex.vo.UserVo;
 @RequestMapping(value="/user", method = {RequestMethod.GET, RequestMethod.POST})
 public class UserController {
 
-	private String line = "---------------------------------------";
-
 	@Autowired
 	private UserService userService;
 	
@@ -25,16 +26,12 @@ public class UserController {
 	@RequestMapping(value="/loginForm", method = {RequestMethod.GET, RequestMethod.POST} )
 	public String loginForm() {
 		
-		System.out.println(line + "[UserController - loginForm" + line);
-		
 		return "/user/loginForm";
 	}
 	
 	//로그인
 	@RequestMapping(value="/login", method = {RequestMethod.GET, RequestMethod.POST} )
 	public String login(@ModelAttribute UserVo userVo, HttpSession session) {
-		
-		System.out.println(line + "[UserController - login" + line);
 		
 		UserVo authUser = userService.getUser(userVo);
 		
@@ -62,9 +59,6 @@ public class UserController {
 	//회원가입 화면
 	@RequestMapping(value="/joinForm", method = {RequestMethod.GET, RequestMethod.POST})
 	public String joinForm() {
-		
-		System.out.println(line+"joinForm"+line);
-		
 		return "/user/joinForm";
 	}
 	
@@ -72,13 +66,30 @@ public class UserController {
 	@RequestMapping(value="/join", method = {RequestMethod.GET, RequestMethod.POST})
 	public String join(@ModelAttribute UserVo userJoin) {
 		
-		System.out.println(line+"join"+line);
+		userService.join(userJoin);
+		
+		return "/user/joinOk";
+	}
+	
+	//회원가입 ajax 형태
+	@RequestMapping(value="/join2", method = {RequestMethod.GET, RequestMethod.POST})
+	public String join2(@RequestBody UserVo userJoin) {
 		
 		System.out.println(userJoin.toString());
 		
 		userService.join(userJoin);
 		
 		return "/user/joinOk";
+	}
+	
+	//회원 가입 시, 아이디 중복 체크
+	@ResponseBody
+	@RequestMapping(value="/idCheck", method = {RequestMethod.GET, RequestMethod.POST})
+	public boolean idCheck(@RequestParam("id") String id) {
+		
+		boolean idCheck = userService.idCheck(id);
+		
+		return idCheck;
 	}
 	
 	//회원 정보 수정

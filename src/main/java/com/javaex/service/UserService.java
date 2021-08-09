@@ -40,4 +40,22 @@ public class UserService {
 		
 	}
 	
+	//회원 가입 시, 아이디 중복 체크
+	public boolean idCheck(String id) {
+		
+		System.out.println("idCheck - service");
+		System.out.println(id);
+		
+		
+		boolean idCheck = false;
+		
+		//id가 db에 없는 경우
+		if(userDao.selectId(id) == null || userDao.selectId(id).getId() == null)
+		{
+			idCheck =true;
+		} 
+		
+		return idCheck;
+	}
+	
 }
