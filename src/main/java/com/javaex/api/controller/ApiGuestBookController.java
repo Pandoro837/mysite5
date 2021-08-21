@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,8 @@ public class ApiGuestBookController {
 	public List<GuestBookVo> list() {
 		
 		List<GuestBookVo> guestBookList = guestBookService.getList();
+		for(GuestBookVo guestBookInfo : guestBookList)
+			System.out.println(guestBookInfo);
 		
 		return guestBookList;
 	}
@@ -55,6 +58,18 @@ public class ApiGuestBookController {
 		System.out.println(removeMap);
 		
 		return guestBookService.delete(removeMap);
+	}
+	
+	//ajax 방명록 저장 - App
+	@ResponseBody
+	@RequestMapping(value="/write2", method= {RequestMethod.GET, RequestMethod.POST}) 
+	public void write2(@RequestBody GuestBookVo guestbookVo){
+		
+		System.out.println("write2");
+		System.out.println(guestbookVo.toString());
+		
+		guestBookService.addGuestBook(guestbookVo);
+		
 	}
 	
 }
