@@ -58,7 +58,7 @@ public class ApiGuestBookController {
 		System.out.println(removeMap);
 		
 		return guestBookService.delete(removeMap);
-	}
+	} 
 	
 	//ajax 방명록 저장 - App
 	@ResponseBody
