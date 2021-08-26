@@ -36,7 +36,18 @@ public class GuestBookService {
 		return guestBookReturn;
 	}
 	
+	public GuestBookVo getGuestBookVo(GuestBookVo requestVo) {
+		
+		int no = requestVo.getNo();
+		
+		GuestBookVo guetsBookVo = guestBookDao.selectOne(no);
+		
+		return guetsBookVo;
+		
+	}
+		
 	public int delete(Map<String, Object> deleteMap) {
 		return guestBookDao.delete(deleteMap);
 	}
+	
 }

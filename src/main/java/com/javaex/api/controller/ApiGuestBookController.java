@@ -29,8 +29,6 @@ public class ApiGuestBookController {
 	public List<GuestBookVo> list() {
 		
 		List<GuestBookVo> guestBookList = guestBookService.getList();
-		for(GuestBookVo guestBookInfo : guestBookList)
-			System.out.println(guestBookInfo);
 		
 		return guestBookList;
 	}
@@ -70,6 +68,19 @@ public class ApiGuestBookController {
 		
 		guestBookService.addGuestBook(guestbookVo);
 		
+	}
+	
+	//안드로이드 방명록 불러오기
+	@ResponseBody
+	@RequestMapping(value="/read", method = {RequestMethod.GET, RequestMethod.POST})
+	public GuestBookVo read(@RequestBody  GuestBookVo requestVo) {
+		
+		System.out.println("/read");
+		System.out.println(requestVo.toString());
+		
+		GuestBookVo guestBookVo = guestBookService.getGuestBookVo(requestVo);
+		return guestBookVo;
+		 
 	}
 	
 }
