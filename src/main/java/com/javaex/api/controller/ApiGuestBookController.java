@@ -67,7 +67,7 @@ public class ApiGuestBookController {
 		System.out.println(guestbookVo.toString());
 		
 		guestBookService.addGuestBook(guestbookVo);
-		
+		  
 	}
 	
 	//안드로이드 방명록 불러오기
