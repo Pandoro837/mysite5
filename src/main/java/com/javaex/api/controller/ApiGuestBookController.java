@@ -68,7 +68,7 @@ public class ApiGuestBookController {
 		
 		guestBookService.addGuestBook(guestbookVo);
 	
-	}
+	} 
 	
 	//안드로이드 방명록 불러오기
 	@ResponseBody
