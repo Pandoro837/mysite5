@@ -59,7 +59,7 @@
 	<!-- 방명록을 하나 가져오기 -->
 	<select id="selectOne" parameterType="int" resultMap="resultMapGuestBook">
 		<![CDATA[
-			SELECT
+			SELECT 
 			     no
 			    ,name
 			    ,pw
